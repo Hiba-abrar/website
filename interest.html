@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You&rsquo;re In — TechFest 2026</title>
+  <meta name="description" content="See how many people from every university are in for TechFest 2026, meet our industry partners, and register for competitions." />
+  <link rel="icon" href="assets/techfest-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="starfield" id="starfield" aria-hidden="true">
+    <svg class="corner corner-left" viewBox="0 0 100 100"><path d="M0 0 V50 M0 0 H50" stroke="#5B8DFF" stroke-width="1.5" fill="none" /></svg>
+    <svg class="corner corner-right" viewBox="0 0 100 100"><path d="M100 0 V50 M100 0 H50" stroke="#9B5CFF" stroke-width="1.5" fill="none" /></svg>
+  </div>
+
+  <!-- shared gradient definition used by every donut ring on this page -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <linearGradient id="orbitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#5B8DFF" />
+        <stop offset="100%" stop-color="#C58BFF" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Top nav -->
+  <header class="topnav">
+    <a href="index.html" class="topnav-brand">
+      <img src="assets/techfest-logo.png" alt="TechFest 2026 logo" class="topnav-logo" />
+      <span>TechFest&nbsp;2026</span>
+    </a>
+    <a href="index.html" class="topnav-back">&larr; Back to home</a>
+  </header>
+
+  <main class="page page-wide">
+
+    <!-- Hero: intro + quick stats on the left, sign-up form on the right -->
+    <div class="interest-hero">
+      <div class="interest-hero-left">
+        <!-- Intro -->
+        <section class="intro fade-up">
+          <span class="eyebrow">You&rsquo;re in!</span>
+          <h1 class="section-title">Here&rsquo;s the full picture</h1>
+          <p class="section-sub">
+            Every campus and every industry partner we&rsquo;ve reached out to, tracked live.
+            Explore the numbers, then register below.
+          </p>
+        </section>
+
+        <!-- Quick stats -->
+        <div class="stats-strip fade-up" style="animation-delay:80ms" aria-label="TechFest 2026 statistics">
+          <div class="stat-card">
+            <span class="stat-number" id="statUniversities">0</span>
+            <span class="stat-label">Universities</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="statInterested">0</span>
+            <span class="stat-label">People Interested</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="statIndustries">0</span>
+            <span class="stat-label">Industry Partners</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="statInvestors">0</span>
+            <span class="stat-label">Total Investors</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="interest-hero-right">
+        <!-- Interest form -->
+        <section class="form-section fade-up" style="animation-delay:160ms" id="formSection">
+          <div class="form-card glass-panel">
+            <span class="eyebrow">New Signal</span>
+            <h2 class="modal-title">Tell us a little about yourself</h2>
+            <p class="modal-subtitle">A few details and you&rsquo;ll be counted on your campus&rsquo;s board instantly.</p>
+
+            <form id="interestForm" novalidate>
+              <div class="field">
+                <label for="university">University</label>
+                <select id="university" name="university" required aria-required="true">
+                  <option value="" disabled selected>Select your university</option>
+                </select>
+                <p class="field-error" id="university-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" name="fullName" type="text" placeholder="e.g. Ayesha Khan" autocomplete="name" required aria-required="true" />
+                <p class="field-error" id="fullName-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="phone">Phone Number</label>
+                <input id="phone" name="phone" type="tel" placeholder="03xx-xxxxxxx" autocomplete="tel" required aria-required="true" />
+                <p class="field-error" id="phone-error" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="email">Email Address</label>
+                <input id="email" name="email" type="email" placeholder="you@university.edu.pk" autocomplete="email" required aria-required="true" />
+                <p class="field-error" id="email-error" role="alert"></p>
+              </div>
+
+              <button type="submit" class="btn btn-submit" id="submitBtn">
+                <span id="submitLabel">Send Signal</span>
+              </button>
+            </form>
+
+            <!-- Success state, swapped in after submit -->
+            <div class="form-success" id="formSuccess" hidden>
+              <div class="check-icon">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                  <circle cx="22" cy="22" r="21" stroke="#5B8DFF" stroke-width="1.4" opacity="0.4" />
+                  <path d="M13 22.5l6 6 12-13" stroke="url(#checkGradient)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="48" class="check-path" />
+                  <defs>
+                    <linearGradient id="checkGradient" x1="0" y1="0" x2="44" y2="44">
+                      <stop offset="0%" stop-color="#5B8DFF" />
+                      <stop offset="100%" stop-color="#C58BFF" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <h2 class="modal-title modal-title-center">You&rsquo;re on the board!</h2>
+              <p class="modal-subtitle modal-subtitle-center">Thanks for signing up — we&rsquo;ll keep you posted on everything TechFest 2026.</p>
+              <div class="modal-links">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-register" id="registerLinkSuccess">
+                  Register for Competitions <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Leaderboard: Universities / Industries toggle -->
+    <section class="leaderboard fade-up" style="animation-delay:200ms">
+      <div class="leaderboard-head">
+        <div>
+          <span class="eyebrow eyebrow-pink">Outreach Board</span>
+          <h2 class="section-title section-title-sm">Who&rsquo;s counted in so far</h2>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Leaderboard view">
+          <button type="button" class="tab is-active" id="tabUniversities" role="tab" aria-selected="true">Universities</button>
+          <button type="button" class="tab" id="tabIndustries" role="tab" aria-selected="false">Industry Partners</button>
+        </div>
+      </div>
+
+      <div class="card-grid" id="universityGrid" role="tabpanel" aria-labelledby="tabUniversities"></div>
+      <div class="card-grid" id="industryGrid" role="tabpanel" aria-labelledby="tabIndustries" hidden></div>
+    </section>
+
+    <!-- Register CTA -->
+    <section class="cta-section fade-up" style="animation-delay:120ms">
+      <div class="cta-card glass-panel">
+        <div class="cta-copy">
+          <span class="eyebrow eyebrow-pink">Ready to go further?</span>
+          <h2 class="section-title section-title-sm">Register your team</h2>
+          <p class="section-sub section-sub-tight">
+            Head to the official TechFest site to lock in your spot for the full competition and workshop lineup.
+          </p>
+        </div>
+        <div class="cta-buttons">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-register" id="registerLink">
+            Register for Competitions <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="interest.js"></script>
+</body>
+</html>

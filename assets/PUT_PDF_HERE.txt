@@ -1,0 +1,8 @@
+Place the real TechFest 2026 guide PDF in this folder and name it:
+
+    techfest-2026-guide.pdf
+
+That exact path is already wired up in config.js (see CONFIG.techfestPDF),
+so the "Download Event Guide (PDF)" button on the interest page will start
+working with no code changes. Delete this text file once the real PDF is
+in place.
