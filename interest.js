@@ -187,7 +187,13 @@ function initTabs(universityGrid, industryGrid) {
 // ============================================================
 function populateUniversitySelect(names) {
   const select = document.getElementById("university");
-  const options = [...new Set((names || []).sort((a, b) => a.localeCompare(b)))];
+  if (!select) return;
+
+  const defaultNames = (CONFIG.universities || []).map((u) => u.name);
+  const allNames = Array.from(new Set([...(names || []), ...defaultNames, "IOBM"])).filter(Boolean);
+  const options = allNames.sort((a, b) => a.localeCompare(b));
+
+  select.innerHTML = '<option value="" disabled selected>Select your university</option>';
 
   options.forEach((name) => {
     const opt = document.createElement("option");
@@ -247,6 +253,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const universityGrid = document.getElementById("universityGrid");
   const industryGrid = document.getElementById("industryGrid");
+  const select = document.getElementById("university");
+
+  // Pre-populate dropdown immediately so options are available without network latency
+  if (select) {
+    populateUniversitySelect((CONFIG.universities || []).map((u) => u.name));
+  }
 
   async function refreshLeaderboard() {
     const universityStats = normalizeUniversityRows(await fetchUniversityStats());
@@ -257,9 +269,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     observeCards(universityGrid);
     renderQuickStats(universityStats.length, interestSubmissionCount);
 
-    const select = document.getElementById("university");
     if (select) {
-      select.innerHTML = '<option value="" disabled selected>Select your university</option>';
       populateUniversitySelect(universityStats.map((u) => u.name));
     }
   }

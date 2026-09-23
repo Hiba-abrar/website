@@ -21,6 +21,7 @@ const CONFIG = {
     { name: "Bahria University", count: 1 },
     { name: "Dawood University", count: 1 },
     { name: "Iqra University", count: 1 },
+    { name: "IOBM", count: 0 },
     { name: "AL-Kawthar University", count: 0 },
   ],
 
@@ -34,6 +35,7 @@ const CONFIG = {
     { name: "Bahria University", city: "Islamabad", interested: 1, goal: 100 },
     { name: "Dawood University", city: "Karachi", interested: 1, goal: 100 },
     { name: "Iqra University", city: "Karachi", interested: 1, goal: 100 },
+    { name: "IOBM", city: "Karachi", interested: 0, goal: 100 },
     { name: "AL-Kawthar University", city: "Karachi", interested: 0, goal: 100 },
   ],
 
@@ -94,10 +96,50 @@ async function fetchUniversityStats() {
     return CONFIG.universities;
   }
 
-  return (data || []).map((item) => ({
-    name: item.name,
-    count: Number(item.count || 0),
-  }));
+  const countsMap = new Map();
+  (data || []).forEach((item) => {
+    countsMap.set(item.name, Number(item.count || 0));
+  });
+
+  // For any universities in CONFIG that aren't yet in the Supabase view,
+  // ensure we check interest_submissions directly
+  const missingInDb = (CONFIG.universities || []).filter((u) => !countsMap.has(u.name));
+  if (missingInDb.length > 0) {
+    try {
+      const { data: subData } = await supabaseClient
+        .from("interest_submissions")
+        .select("university");
+      if (subData) {
+        subData.forEach((row) => {
+          if (row.university && !countsMap.has(row.university)) {
+            countsMap.set(row.university, 0);
+          }
+          if (row.university && missingInDb.some((m) => m.name === row.university)) {
+            countsMap.set(row.university, (countsMap.get(row.university) || 0) + 1);
+          }
+        });
+      }
+    } catch (_) {}
+  }
+
+  const result = [];
+  const seen = new Set();
+
+  (CONFIG.universities || []).forEach((u) => {
+    seen.add(u.name);
+    result.push({
+      name: u.name,
+      count: countsMap.has(u.name) ? countsMap.get(u.name) : Number(u.count || 0),
+    });
+  });
+
+  countsMap.forEach((count, name) => {
+    if (!seen.has(name)) {
+      result.push({ name, count });
+    }
+  });
+
+  return result;
 }
 
 async function submitInterestForm(payload) {

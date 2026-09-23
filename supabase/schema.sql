@@ -27,6 +27,7 @@ insert into universities (name) values
   ('Bahria University'),
   ('Dawood University'),
   ('Iqra University'),
+  ('IOBM'),
   ('AL-Kawthar University')
 on conflict (name) do nothing;
 
